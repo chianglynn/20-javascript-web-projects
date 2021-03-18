@@ -37,7 +37,7 @@ button {
 }
 
 button:hover {
-  filter:  brightness(95%);
+  filter: brightness(95%);
 }
 
 button:active {
