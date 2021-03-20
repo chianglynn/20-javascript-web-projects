@@ -36,11 +36,23 @@ function switchTheme(event) {
     if (event.target.checked) {
         document.documentElement.setAttribute('data-theme', 'dark'); // document.documentElement.dataset.theme = 'dark';
         darkMode();
+        localStorage.setItem('theme', 'dark');
     } else {
         document.documentElement.setAttribute('data-theme', 'white'); // document.documentElement.dataset.theme = 'white';
         lightMode();
+        localStorage.setItem('theme', 'light');
     }
 }
 
 // Event Listener
 toggleSwitch.addEventListener('change', switchTheme);
+
+// Check Local Storage For Theme
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme); // document.documentElement.dataset.theme = currentTheme;
+    if (currentTheme === 'dark') {
+        toggleSwitch.checked = true;
+        darkMode();
+    }
+}
