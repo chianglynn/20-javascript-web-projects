@@ -72,6 +72,10 @@ h2 {
   color: #000;
 }
 
+#computer .selected {
+  color: #000;
+}
+
 .reset-icon {
   font-size: 30px;
   cursor: pointer;
