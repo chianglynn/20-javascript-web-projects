@@ -11,9 +11,11 @@ const apiKey = 'DEMO_KEY';
 const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${count}`;
 
 let resultsArray = [];
+let favorites = {};
 
-function updateDOM() {
-    resultsArray.forEach(result => {
+function createDOMNodes(page) {
+    const currentArray = page === 'results' ? resultsArray : Object.values(favorites);
+    currentArray.forEach(result => {
         // Card Container
         const card = document.createElement('div');
         card.classList.add('card');
@@ -39,6 +41,7 @@ function updateDOM() {
         const saveText = document.createElement('p');
         saveText.classList.add('clickable');
         saveText.textContent = 'Add to Favorites';
+        saveText.setAttribute('onclick', `saveFavorite('${result.url}')`);
         // Card Text
         const cardText = document.createElement('p');
         cardText.classList.add('card-text');
@@ -61,37 +64,41 @@ function updateDOM() {
     });
 }
 
+function updateDOM(page) {
+    // Get favorites from localStorage
+    if (localStorage.getItem('nasaFavorites')) {
+        favorites = JSON.parse(localStorage.getItem('nasaFavorites'));
+    }
+    createDOMNodes(page);
+}
+
 // Get 10 images from NASA API
 async function getNasaPictures() {
     try {
         const response = await fetch(apiUrl);
         resultsArray = await response.json();
-        updateDOM();
+        updateDOM('results');
     } catch (error) {
         // Catch error here
     }
 }
 
+// Add result to Favorites
+function saveFavorite(itemUrl) {
+    // Loop through results array to select favorite
+    resultsArray.forEach(item => {
+        if (item.url.includes(itemUrl) && !favorites[itemUrl]) {
+            favorites[itemUrl] = item;
+        };
+        // Show save confirmation for 2 seconds
+        saveConfirmed.hidden = false;
+        setTimeout(() => {
+            saveConfirmed.hidden = true
+        }, 2000);
+        // Set favorites in localStorage
+        localStorage.setItem('nasaFavorites', JSON.stringify(favorites));
+    })
+}
+
 // On load
 getNasaPictures();
-
-/* <div class="card">
-    <a href="" title="View Full Image" target="_blank">
-        <img src="https://apod.nasa.gov/apod/image/2104/FlamenebulaIR.jpg" alt="NASA Picture of the Day"
-            class="card-img-top">
-    </a>
-    <div class="card-body">
-        <h5 class="card-title">Title of Image</h5>
-        <p class="clickable">Add to Favorites</p>
-        <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi aliquam
-            veritatis corporis eligendi minima eius eos aspernatur quis. Quia illum aliquam laborum neque
-            provident ipsa error natus dolorem. Tenetur, ullam? Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Fugit error, odio minima temporibus aperiam deleniti iste recusandae sapiente
-            dolorum maiores impedit vel! Magnam dolor deleniti debitis nostrum, voluptatibus quasi omnis.
-        </p>
-        <small class="text-muted">
-            <strong>12-12-2020</strong>
-            <span>Copyright Info</span>
-        </small>
-    </div>
-</div> */
