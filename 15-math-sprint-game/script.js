@@ -11,6 +11,7 @@ const bestScores = document.querySelectorAll('.best-score-value');
 // Countdown Page
 const countdown = document.querySelector('.countdown');
 let count = 3;
+let counting;
 // Game Page
 const itemContainer = document.querySelector('.item-container');
 // Score Page
@@ -31,9 +32,83 @@ let equationObject = {};
 const wrongFormat = [];
 
 // Time
+let timer;
+let timePlayed = 0;
+let baseTime = 0;
+let penaltyTime = 0;
+let finalTime = 0;
+let finalTimeDisplay = '0.0s';
 
 // Scroll
 let valueY = 0;
+
+// Reset game
+function playAgain() {
+  count = 3;
+  gamePage.addEventListener('click', startTimer);
+  scorePage.hidden = true;
+  splashPage.hidden = false;
+  equationsArray = [];
+  playerGuessArray = [];
+  valueY = 0;
+  playAgainBtn.hidden = true;
+}
+
+function showScorePage() {
+  // Show play again button after 1 second
+  setTimeout(() => {
+    playAgainBtn.hidden = false;
+  }, 1000);
+  gamePage.hidden = true;
+  scorePage.hidden = false;
+}
+
+// Format and display time in DOM
+function scoresToDOM() {
+  finalTimeDisplay = finalTime.toFixed(1);
+  baseTime = timePlayed.toFixed(1);
+  penaltyTime = penaltyTime.toFixed(1);
+  baseTimeEl.textContent = `Base Time: ${baseTime}s`;
+  penaltyTimeEl.textContent = `Penalty: +${penaltyTime}s`;
+  finalTimeEl.textContent = `${finalTimeDisplay}s`;
+  // Scroll to top, go to score page
+  itemContainer.scrollTo({ top: 0, behavior: 'instant' });
+  showScorePage();
+}
+
+// Stop timer, process results, go to score page
+function checkTime() {
+  if (playerGuessArray.length == questionAmount) {
+    clearInterval(timer);
+    // Check for wrong guesses, add penalty time
+    equationsArray.forEach((equation, index) => {
+      if (equation.evaluated === playerGuessArray[index]) {
+        // Correct guess, no penalty
+      } else {
+        // Incorrect guess, add penalty
+        penaltyTime += .5;
+      }
+    });
+    finalTime = timePlayed + penaltyTime;
+    scoresToDOM();
+  }
+}
+
+// Add a tenth of a second to timePlayed
+function addTime() {
+  timePlayed += .1;
+  checkTime();
+}
+
+// Start timer when game page is clicked
+function startTimer() {
+  // Reset time
+  timePlayed = 0;
+  penaltyTime = 0;
+  finalTime = 0;
+  timer = setInterval(addTime, 100);
+  gamePage.removeEventListener('click', startTimer);
+}
 
 // Scroll, store user selection in palyerGuessArray
 function select(guessedTrue) {
@@ -48,6 +123,7 @@ function select(guessedTrue) {
 function showGamePage() {
   gamePage.hidden = false;
   countdownPage.hidden = true;
+  clearInterval(counting);
 }
 // Get random number up to a max number
 function getRandomInt(max) {
@@ -124,12 +200,13 @@ function populateGamePage() {
 
 function countdownStart() {
   countdown.textContent = count;
-  const counting = setInterval(() => {
+  counting = setInterval(function () {
     count > 1 ? count-- : count = 'GO!';
     countdown.textContent = count;
-    if (count < 0) clearInterval(counting)
   }, 1000);
 }
+
+// function countdownStop()
 
 // Navigate from Splash page to Countdown page
 function showCountdown() {
@@ -171,3 +248,4 @@ startForm.addEventListener('click', () => {
 
 // Event Listeners
 startForm.addEventListener('submit', selectQuestionAmount);
+gamePage.addEventListener('click', startTimer);
