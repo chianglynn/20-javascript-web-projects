@@ -249,8 +249,6 @@ function countdownStart() {
   }, 1000);
 }
 
-// function countdownStop()
-
 // Navigate from Splash page to Countdown page
 function showCountdown() {
   countdownPage.hidden = false;
