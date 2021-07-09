@@ -27,7 +27,7 @@ async function getQuotes() {
         apiUrlQuotes = await response.json();
         newQuote();
     } catch (error) {
-        console.log(error);
+        console.error(error);
         getQuotes();
     }
 }
@@ -38,7 +38,6 @@ async function getQuotes() {
 function newQuote() {
     // Pick a random quote from apiQuotes array
     const quote = localQuotes[Math.floor(Math.random() * localQuotes.length)];
-    console.log(quote);
 }
 
 newQuote();
@@ -51,18 +50,12 @@ function newQuote() {
     const quote = apiUrlQuotes[Math.floor(Math.random() * apiUrlQuotes.length)];
 
     // Check if Author field is blank and replace it with 'Unknown'
-    if (!quote.author) {
-        authorText.textContent = 'Unknown'
-    } else {
-        authorText.textContent = quote.author;
-    }
+    if (!quote.author) authorText.textContent = 'Unknown';
+    else authorText.textContent = quote.author;
 
     // Check Quote length to determine styling
-    if (quote.text.length > 50) {
-        quoteText.classList.add('long-quote');
-    } else {
-        quoteText.classList.remove('long-quote');
-    }
+    if (quote.text.length > 50) quoteText.classList.add('long-quote');
+    else quoteText.classList.remove('long-quote');
 
     quoteText.textContent = quote.text;
     removeLoadingSpinner();
