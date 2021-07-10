@@ -29,19 +29,16 @@ async function getJokes() {
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-        if (data.setup) {
-            // Twopart Joke
-            joke = `${data.setup} ... ${data.delivery}`;
-        } else {
-            // Single Joke
-            joke = data.joke;
-        }
+        // Twopart Joke
+        if (data.setup) joke = `${data.setup} ... ${data.delivery}`;
+        // Single Joke
+        else joke = data.joke;
         // Text-to-speech
         tellMe(joke);
         // Disable Button
         toggleButton();
     } catch (error) {
-        console.log('fetch failed', error);
+        console.error('fetch failed', error);
     }
 }
 
