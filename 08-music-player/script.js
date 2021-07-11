@@ -53,9 +53,6 @@ function pauseSong() {
     music.pause();
 }
 
-// Play or Pause Event Listener
-playBtn.addEventListener('click', () => isPlaying ? pauseSong() : playSong());
-
 // Upate DOM
 function loadSong(song) {
     title.textContent = song.displayName;
@@ -80,9 +77,6 @@ function nextSong() {
     loadSong(songs[songIndex]);
     playSong();
 }
-
-// On Load - Select First Song
-loadSong(songs[songIndex]);
 
 // Update Progress Bar & Time
 function updateProgressBar(e) {
@@ -113,7 +107,11 @@ function setProgressBar(e) {
     music.currentTime = (clickX / width) * duration;
 }
 
+// On Load - Select First Song
+loadSong(songs[songIndex]);
+
 // Event Listeners
+playBtn.addEventListener('click', () => isPlaying ? pauseSong() : playSong());
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 music.addEventListener('timeupdate', updateProgressBar);

@@ -106,10 +106,9 @@ function restorePreviousCountdown() {
     }
 }
 
-// Event Listener
-countdownForm.addEventListener('submit', updateCountdown);
-countdownBtn.addEventListener('click', reset);
-completeBtn.addEventListener('click', reset);
-
 // On load, check localStorage
 restorePreviousCountdown();
+
+// Event Listener
+countdownForm.addEventListener('submit', updateCountdown);
+[countdownBtn, completeBtn].forEach(sl => sl.addEventListener('click', reset));
