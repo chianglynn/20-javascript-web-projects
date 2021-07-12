@@ -4,7 +4,6 @@ const imagesContainer = document.querySelector('.images-container');
 const saveConfirmed = document.querySelector('.save-confirmed');
 const loader = document.querySelector('.loader');
 
-
 // NASA API
 const count = 10;
 const apiKey = 'DEMO_KEY';
@@ -83,9 +82,7 @@ function createDOMNodes(page) {
 
 function updateDOM(page) {
     // Get favorites from localStorage
-    if (localStorage.getItem('nasaFavorites')) {
-        favorites = JSON.parse(localStorage.getItem('nasaFavorites'));
-    }
+    if (localStorage.getItem('nasaFavorites')) favorites = JSON.parse(localStorage.getItem('nasaFavorites'));
     imagesContainer.textContent = '';
     createDOMNodes(page);
     showContent(page);
@@ -101,6 +98,7 @@ async function getNasaPictures() {
         updateDOM('results');
     } catch (error) {
         // Catch error here
+        console.error(error);
     }
 }
 
@@ -108,14 +106,10 @@ async function getNasaPictures() {
 function saveFavorite(itemUrl) {
     // Loop through results array to select favorite
     resultsArray.forEach(item => {
-        if (item.url.includes(itemUrl) && !favorites[itemUrl]) {
-            favorites[itemUrl] = item;
-        };
+        if (item.url.includes(itemUrl) && !favorites[itemUrl]) favorites[itemUrl] = item;
         // Show save confirmation for 2 seconds
         saveConfirmed.hidden = false;
-        setTimeout(() => {
-            saveConfirmed.hidden = true
-        }, 2000);
+        setTimeout(() => saveConfirmed.hidden = true, 2000);
         // Set favorites in localStorage
         localStorage.setItem('nasaFavorites', JSON.stringify(favorites));
     })
