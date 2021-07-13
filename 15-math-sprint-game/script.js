@@ -75,9 +75,7 @@ function updateBestScore() {
       // Return best score as number with one decimal
       const savedBestScore = +bestScoreArray[index].bestScore;
       // Update if the new final score is less or replacing 0
-      if (savedBestScore === 0 || savedBestScore > finalTime) {
-        bestScoreArray[index].bestScore = finalTimeDisplay;
-      }
+      if (savedBestScore === 0 || savedBestScore > finalTime) bestScoreArray[index].bestScore = finalTimeDisplay;
     }
   });
   bestScoresToDOM();
@@ -98,9 +96,7 @@ function playAgain() {
 
 function showScorePage() {
   // Show play again button after 1 second
-  setTimeout(() => {
-    playAgainBtn.hidden = false;
-  }, 1000);
+  setTimeout(() => playAgainBtn.hidden = false, 1000);
   gamePage.hidden = true;
   scorePage.hidden = false;
 }
@@ -262,9 +258,7 @@ function showCountdown() {
 function getRadioValue() {
   let radioValue;
   radioInputs.forEach(radioInput => {
-    if (radioInput.checked) {
-      radioValue = radioInput.value;
-    }
+    if (radioInput.checked) radioValue = radioInput.value;
   });
   return radioValue;
 }
@@ -281,15 +275,13 @@ startForm.addEventListener('click', () => {
     // Remove Selected Label styling
     radioEl.classList.remove('selected-label');
     // Add it back if  radio input is checked
-    if (radioEl.children[1].checked) {
-      radioEl.classList.add('selected-label');
-    }
+    if (radioEl.children[1].checked) radioEl.classList.add('selected-label');
   })
 });
+
+// On load
+getSavedBestScores();
 
 // Event Listeners
 startForm.addEventListener('submit', selectQuestionAmount);
 gamePage.addEventListener('click', startTimer);
-
-// On load
-getSavedBestScores();

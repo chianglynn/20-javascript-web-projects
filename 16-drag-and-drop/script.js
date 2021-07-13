@@ -75,27 +75,19 @@ function updateDOM() {
   if (!updatedOnLoad) getSavedColumns();
   // Backlog Column
   backlogList.textContent = '';
-  backlogListArray.forEach((backlogItem, index) => {
-    createItemEl(backlogList, 0, backlogItem, index);
-  });
+  backlogListArray.forEach((backlogItem, index) => createItemEl(backlogList, 0, backlogItem, index));
   backlogListArray = filterArray(backlogListArray);
   // Progress Column
   progressList.textContent = '';
-  progressListArray.forEach((progressItem, index) => {
-    createItemEl(progressList, 1, progressItem, index);
-  });
+  progressListArray.forEach((progressItem, index) => createItemEl(progressList, 1, progressItem, index));
   progressListArray = filterArray(progressListArray);
   // Complete Column
   completeList.textContent = '';
-  completeListArray.forEach((completeItem, index) => {
-    createItemEl(completeList, 2, completeItem, index);
-  });
+  completeListArray.forEach((completeItem, index) => createItemEl(completeList, 2, completeItem, index));
   completeListArray = filterArray(completeListArray);
   // On Hold Column
   onHoldList.textContent = '';
-  onHoldListArray.forEach((onHoldItem, index) => {
-    createItemEl(onHoldList, 3, onHoldItem, index);
-  });
+  onHoldListArray.forEach((onHoldItem, index) => createItemEl(onHoldList, 3, onHoldItem, index));
   onHoldListArray = filterArray(onHoldListArray);
   // Run getSavedColumns only once, Update Local Storage
   updatedOnLoad = true;
