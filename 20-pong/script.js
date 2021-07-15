@@ -103,21 +103,15 @@ function ballMove() {
   // Vertical Speed
   ballY += -speedY;
   // Horizontal Speed
-  if (playerMoved && paddleContact) {
-    ballX += speedX;
-  }
+  if (playerMoved && paddleContact) ballX += speedX;
 }
 
 // Determine What Ball Bounces Off, Score Points, Reset Ball
 function ballBoundaries() {
   // Bounce off Left Wall
-  if (ballX < 0 && speedX < 0) {
-    speedX = -speedX;
-  }
+  if (ballX < 0 && speedX < 0) speedX = -speedX;
   // Bounce off Right Wall
-  if (ballX > width && speedX > 0) {
-    speedX = -speedX;
-  }
+  if (ballX > width && speedX > 0) speedX = -speedX;
   // Bounce off player paddle (bottom)
   if (ballY > height - paddleDiff) {
     if (ballX > paddleBottomX && ballX < paddleBottomX + paddleWidth) {
@@ -163,11 +157,8 @@ function ballBoundaries() {
 // Computer Movement
 function computerAI() {
   if (playerMoved) {
-    if (paddleTopX + paddleDiff < ballX) {
-      paddleTopX += computerSpeed;
-    } else {
-      paddleTopX -= computerSpeed;
-    }
+    if (paddleTopX + paddleDiff < ballX) paddleTopX += computerSpeed;
+    else paddleTopX -= computerSpeed;
   }
 }
 
@@ -226,12 +217,8 @@ function startGame() {
     playerMoved = true;
     // Compensate for canvas being centered
     paddleBottomX = e.clientX - canvasPosition - paddleDiff;
-    if (paddleBottomX < paddleDiff) {
-      paddleBottomX = 0;
-    }
-    if (paddleBottomX > width - paddleWidth) {
-      paddleBottomX = width - paddleWidth;
-    }
+    if (paddleBottomX < paddleDiff) paddleBottomX = 0;
+    if (paddleBottomX > width - paddleWidth) paddleBottomX = width - paddleWidth;
     // Hide Cursor
     canvas.style.cursor = 'none';
   });
